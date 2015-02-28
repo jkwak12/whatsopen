@@ -71,9 +71,9 @@ public class MapsActivity extends FragmentActivity {
 
         Marker Grainger = mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(40.112475, -88.226863))
-                .title("Grainger Library"));
+                .title("Grainger Library")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.greentriangle)));
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Grainger.getPosition(), 13));
-
     }
 }
