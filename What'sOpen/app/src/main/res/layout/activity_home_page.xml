@@ -4,6 +4,11 @@
     android:layout_height="match_parent"
     android:paddingLeft="16dp"
     android:paddingRight="16dp">
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logoyerrr"/>
     <CheckBox android:id="@+id/foodBox"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
