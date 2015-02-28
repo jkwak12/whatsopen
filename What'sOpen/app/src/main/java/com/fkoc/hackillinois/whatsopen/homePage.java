@@ -1,17 +1,31 @@
 package com.fkoc.hackillinois.whatsopen;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 
 public class homePage extends ActionBarActivity {
+
+    Button toMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
+
+        Button toMap = (Button) findViewById(R.id.enter);
+
+        toMap.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent goToMap = new Intent(homePage.this, MapsActivity.class);
+                startActivity(goToMap);
+            }
+        });
     }
 
 
