@@ -1,11 +1,14 @@
 package com.fkoc.hackillinois.whatsopen;
 
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends FragmentActivity {
@@ -17,6 +20,11 @@ public class MapsActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
+
+        // Enable Location Tracking
+        mMap.setMyLocationEnabled(true);
+
+
     }
 
     @Override
@@ -60,6 +68,12 @@ public class MapsActivity extends FragmentActivity {
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
-        mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+
+        Marker Grainger = mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(40.112475, -88.226863))
+                .title("Grainger Library"));
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Grainger.getPosition(), 13));
+
     }
 }
