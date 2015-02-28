@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    android:background="#f5fdb4">
+    android:background="#fcf7cf">
     <ImageView
         android:id="@+id/logo"
         android:layout_width="wrap_content"
