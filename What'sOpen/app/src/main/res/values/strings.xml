@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">What\'s Open</string>
     <string name="title_activity_maps">Map</string>
+
+    <string name="title_activity_homepage">homepage</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>
