@@ -16,7 +16,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.api.client.util.Lists;
 
@@ -55,12 +54,35 @@ public class MapsActivity extends FragmentActivity {
             s_longitude = location.getLongitude();
         }
 
-        Query restaurant_query = new Query()
-                .within(new Circle(s_latitude, s_longitude, search_radius))
-                .sortAsc("$distance")
-                .only("name", "latitude", "longitude", "rating", "hours", "open_24hrs", "meal_deliver", "meal_takeout");
+        //retrieve user choices
+        Bundle extras = getIntent().getExtras();
+        boolean foodB = extras.getBoolean("foodB");
+        boolean cafB = extras.getBoolean("cafB");
+        boolean gymB = extras.getBoolean("gymB");
+        boolean buildB = extras.getBoolean("buildB");
+        boolean libB = extras.getBoolean("libB");
 
-        task.execute(restaurant_query);
+        if (foodB) {
+            Query restaurant_query = new Query()
+                    .within(new Circle(s_latitude, s_longitude, search_radius))
+                    .sortAsc("$distance")
+                    .only("name", "latitude", "longitude", "rating", "hours");
+
+            task.execute(restaurant_query);
+        }
+        if (cafB) {
+            mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(s_latitude, s_longitude)));
+        }
+        if (gymB) {
+            //Nothing for now
+        }
+        if (buildB) {
+            //Nothing for now
+        }
+        if (libB) {
+            //Nothing for now
+        }
     }
 
     protected class FactualRetrievalTask extends AsyncTask<Query, Integer, List<ReadResponse>> {
@@ -86,24 +108,24 @@ public class MapsActivity extends FragmentActivity {
                     String name = (String) restaurant.get("name");
                     double latitude = (double) restaurant.get("latitude");
                     double longitude = (double) restaurant.get("longitude");
-                    //Number rating = (Number) restaurant.get("rating");
                     MarkerOptions mo = new MarkerOptions()
                             .position(new LatLng(latitude, longitude))
                             .alpha(0.8f)
                             .title(name);
                     try {
                         JSONObject hours = (JSONObject) restaurant.get("hours");
-                        mo.snippet(hours.toString());
                         if (isOpen(hours)) {
-                            mo.icon(BitmapDescriptorFactory.fromResource(R.drawable.greentriangle));
+                            mo.icon(BitmapDescriptorFactory.defaultMarker());
                         } else {
                             mo.icon(BitmapDescriptorFactory.fromResource(R.drawable.redtriangle1));
                         }
-                    } catch (NullPointerException e) {
-                        mo.snippet(e.getMessage());
                         mo.icon(BitmapDescriptorFactory.defaultMarker());
+                        mo.snippet(hours.toString());
+                        mMap.addMarker(mo);
+                    } catch (NullPointerException e) {
+                        mo.snippet("No hours available");
                     }
-                    mMap.addMarker(mo);
+                    //Number rating = (Number) restaurant.get("rating");
                     //boolean open24 = (boolean) restaurant.get("open_24hrs");
                     //boolean deliver = (boolean) restaurant.get("meal_deliver");
                     //boolean takeout = (boolean) restaurant.get("meal_takeout");
@@ -120,24 +142,26 @@ public class MapsActivity extends FragmentActivity {
     boolean isOpen(JSONObject hours) {
         String[] days = {"sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"};
         try {
-            JSONArray times_1 = hours.getJSONArray(days[Calendar.DAY_OF_WEEK-1]);
+            JSONArray times_1 = hours.getJSONArray(days[Calendar.DAY_OF_WEEK - 1]);
             JSONArray times = times_1.getJSONArray(0);
             Calendar now = Calendar.getInstance();
-            Calendar open = Calendar.getInstance();
-            Calendar close = Calendar.getInstance();
-            open.set(Calendar.HOUR_OF_DAY, Integer.parseInt(times.getString(0).split(":")[0]));
-            open.set(Calendar.MINUTE, Integer.parseInt(times.getString(0).split(":")[1]));
-            close.set(Calendar.HOUR_OF_DAY, Integer.parseInt(times.getString(0).split(":")[0]));
-            close.set(Calendar.MINUTE, Integer.parseInt(times.getString(0).split(":")[1]));
-            if (now.compareTo(open) > 0 && now.compareTo(close) < 0) {
-                return true;
+            int currentTime = now.HOUR_OF_DAY * 60 + now.MINUTE;
+            int open_t = Integer.parseInt(times.getString(0).split(":")[0]) * 60 + Integer.parseInt(times.getString(0).split(":")[1]);
+            int close_t = Integer.parseInt(times.getString(1).split(":")[0]) * 60 + Integer.parseInt(times.getString(1).split(":")[1]);
+            if (close_t > open_t) {
+                if (currentTime > open_t & currentTime < close_t) {
+                    return true;
+                }
+            } else {
+                if (currentTime > open_t & currentTime > close_t) {
+                    return true;
+                }
             }
         } catch (JSONException e) {
             //this day could not be found
         }
         return false;
     }
-
 
     @Override
     protected void onResume() {
@@ -160,6 +184,7 @@ public class MapsActivity extends FragmentActivity {
      * stopped or paused), {@link #onCreate(Bundle)} may not be called again so we should call this
      * method in {@link #onResume()} to guarantee that it will be called.
      */
+
     private void setUpMapIfNeeded() {
         // Do a null check to confirm that we have not already instantiated the map.
         if (mMap == null) {
@@ -182,13 +207,6 @@ public class MapsActivity extends FragmentActivity {
     private void setUpMap() {
 
         LatLng GraingerLatLng = new LatLng(40.112475, -88.226863);
-
-        Marker Grainger = mMap.addMarker(new MarkerOptions()
-                .position(GraingerLatLng)
-                .title("Grainger Library")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.redtriangle1))
-                .alpha(.8f));
-
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Grainger.getPosition(), 13));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(GraingerLatLng, 16));
     }
 }
