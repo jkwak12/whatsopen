@@ -23,6 +23,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.Time;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
@@ -71,11 +72,18 @@ public class MapsActivity extends FragmentActivity {
             task.execute(restaurant_query);
         }
         if (cafB) {
-            mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(s_latitude, s_longitude)));
+            Spot testStarbucks = new Spot("Starbucks", 40.110303, -88.231731, 600, 1320);
+            MarkerOptions mo = new MarkerOptions()
+            .position(testStarbucks.getLatLng())
+            .title(testStarbucks.getName());
+            if (testStarbucks.isOpen()) {
+                mo.icon(BitmapDescriptorFactory.defaultMarker());
+            } else {
+                mo.icon(BitmapDescriptorFactory.fromResource(R.drawable.redtriangle1));
+            }
         }
         if (gymB) {
-            //Nothing for now
+
         }
         if (buildB) {
             //Nothing for now
@@ -119,11 +127,9 @@ public class MapsActivity extends FragmentActivity {
                         } else {
                             mo.icon(BitmapDescriptorFactory.fromResource(R.drawable.redtriangle1));
                         }
-                        mo.icon(BitmapDescriptorFactory.defaultMarker());
-                        mo.snippet(hours.toString());
                         mMap.addMarker(mo);
                     } catch (NullPointerException e) {
-                        mo.snippet("No hours available");
+                        //No business hour information available
                     }
                     //Number rating = (Number) restaurant.get("rating");
                     //boolean open24 = (boolean) restaurant.get("open_24hrs");
@@ -138,22 +144,23 @@ public class MapsActivity extends FragmentActivity {
     // JSONObject is named hours
     // assuming datetime is imported
 
-
+    // determines from JSON if place is currently open
     boolean isOpen(JSONObject hours) {
         String[] days = {"sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"};
         try {
             JSONArray times_1 = hours.getJSONArray(days[Calendar.DAY_OF_WEEK - 1]);
             JSONArray times = times_1.getJSONArray(0);
-            Calendar now = Calendar.getInstance();
-            int currentTime = now.HOUR_OF_DAY * 60 + now.MINUTE;
+            int currentHour = new Time(System.currentTimeMillis()).getHours();
+            int currentMinute = new Time(System.currentTimeMillis()).getMinutes();
+            int currentTime = currentHour * 60 + currentMinute;
             int open_t = Integer.parseInt(times.getString(0).split(":")[0]) * 60 + Integer.parseInt(times.getString(0).split(":")[1]);
             int close_t = Integer.parseInt(times.getString(1).split(":")[0]) * 60 + Integer.parseInt(times.getString(1).split(":")[1]);
             if (close_t > open_t) {
-                if (currentTime > open_t & currentTime < close_t) {
+                if (currentTime > open_t && currentTime < close_t) {
                     return true;
                 }
             } else {
-                if (currentTime > open_t & currentTime > close_t) {
+                if ((currentTime > open_t && currentTime > close_t) || (currentTime < open_t && currentTime > close_t)) {
                     return true;
                 }
             }

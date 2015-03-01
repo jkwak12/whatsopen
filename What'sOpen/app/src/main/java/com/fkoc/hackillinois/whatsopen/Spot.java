@@ -1,5 +1,9 @@
 package com.fkoc.hackillinois.whatsopen;
 
+import com.google.android.gms.maps.model.LatLng;
+
+import java.sql.Time;
+
 /**
  * Created by ah299_000 on 2/28/2015.
  */
@@ -26,8 +30,24 @@ public class Spot {
         return name;
     }
 
-    public double[] getLatLng() {
-        double[] res = {latitude, longitude};
+    public LatLng getLatLng() {
+        LatLng res = new LatLng(latitude, longitude);
         return res;
+    }
+
+    public boolean isOpen() {
+        int currentHour = new Time(System.currentTimeMillis()).getHours();
+        int currentMinute = new Time(System.currentTimeMillis()).getMinutes();
+        int currentTime = currentHour * 60 + currentMinute;
+        if (closing_time > open_time) {
+            if (currentTime > open_time && currentTime < closing_time) {
+                return true;
+            }
+        } else {
+            if ((currentTime > open_time && currentTime > closing_time) || (currentTime < open_time && currentTime > closing_time)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
