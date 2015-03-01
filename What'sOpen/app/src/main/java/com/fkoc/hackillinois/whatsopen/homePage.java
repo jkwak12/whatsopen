@@ -20,6 +20,7 @@ import android.widget.Button;
 public class homePage extends Activity {
     private CheckBox foodBox, libraryBox, cafeBox, buildingBox, gymBox;
     private Button enter;
+    public boolean foodB, libB, cafB, buildB, gymB;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,7 +36,7 @@ public class homePage extends Activity {
         libraryBox = (CheckBox) findViewById(R.id.libraryBox);
         cafeBox = (CheckBox) findViewById(R.id.cafeBox);
         gymBox = (CheckBox) findViewById(R.id.gymBox);
-        libraryBox = (CheckBox) findViewById(R.id.libraryBox);
+        buildingBox = (CheckBox) findViewById(R.id.buildingBox);
 
         enter = (Button) findViewById(R.id.enter);
 
@@ -46,16 +47,11 @@ public class homePage extends Activity {
             @Override
             public void onClick(View v) {
 
-                StringBuffer result = new StringBuffer();
-                result.append("Food check : ").append(foodBox.isChecked());
-                result.append("\nCoffee check :").append(cafeBox.isChecked());
-                result.append("\nGym check : ").append(gymBox.isChecked());
-                result.append("\nBuildings check : ").append(buildingBox.isChecked());
-                result.append("\nLibrary check :").append(libraryBox.isChecked());
-
-                Toast.makeText(homePage.this, result.toString(),
-                        Toast.LENGTH_LONG).show();
-
+                foodB = foodBox.isChecked();
+                cafB = (cafeBox.isChecked());
+                gymB = (gymBox.isChecked());
+                buildB = (buildingBox.isChecked());
+                libB = (libraryBox.isChecked());
             }
         });
 
