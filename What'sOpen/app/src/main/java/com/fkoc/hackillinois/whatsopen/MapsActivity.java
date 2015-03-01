@@ -96,10 +96,11 @@ public class MapsActivity extends FragmentActivity {
                 .title(s.getName())
                 .position(s.getLatLng());
                 if (s.isOpen()) {
-                    mo.icon(BitmapDescriptorFactory.defaultMarker());
+                    mo.icon(BitmapDescriptorFactory.fromResource(R.drawable.greentri));
                 } else {
                     mo.icon(BitmapDescriptorFactory.fromResource(R.drawable.redtriangle1));
                 }
+                mMap.addMarker(mo);
             }
         }
         if (buildB) {
@@ -120,10 +121,11 @@ public class MapsActivity extends FragmentActivity {
                         .title(s.getName())
                         .position(s.getLatLng());
                 if (s.isOpen()) {
-                    mo.icon(BitmapDescriptorFactory.defaultMarker());
+                    mo.icon(BitmapDescriptorFactory.fromResource(R.drawable.greentri));
                 } else {
                     mo.icon(BitmapDescriptorFactory.fromResource(R.drawable.redtriangle1));
                 }
+                mMap.addMarker(mo);
             }
         }
         if (libB) {
@@ -132,7 +134,8 @@ public class MapsActivity extends FragmentActivity {
             libraries.add(new Spot("Math Library", 40.109420, -88.228277, 540, 1200));
             libraries.add(new Spot("Chem Library", 40.108411, -88.226035, 510, 1260));
             //libraries.add(new Spot("Health Sciences Library", 40.108575, -88.226035, o, c));
-            //libraries.add(new Spot("Communications Library", 40.105628, -88.228158, o, c));             libraries.add(new Spot("Classics Library", 40.104549, -88.228399, 540, 1140));
+            //libraries.add(new Spot("Communications Library", 40.105628, -88.228158, o, c));
+            //libraries.add(new Spot("Classics Library", 40.104549, -88.228399, 540, 1140));
             libraries.add(new Spot("English Library", 40.104376, -88.228753, 540, 1140));
             //libraries.add(new Spot("Archives", 40.104610, -88.228850, o, c));
             libraries.add(new Spot("Undergraduate Library", 40.104643, -88.227182, 0, 1439));
@@ -149,10 +152,11 @@ public class MapsActivity extends FragmentActivity {
                         .title(s.getName())
                         .position(s.getLatLng());
                 if (s.isOpen()) {
-                    mo.icon(BitmapDescriptorFactory.defaultMarker());
+                    mo.icon(BitmapDescriptorFactory.fromResource(R.drawable.greentri));
                 } else {
                     mo.icon(BitmapDescriptorFactory.fromResource(R.drawable.redtriangle1));
                 }
+                mMap.addMarker(mo);
             }
         }
     }
@@ -187,7 +191,7 @@ public class MapsActivity extends FragmentActivity {
                     try {
                         JSONObject hours = (JSONObject) restaurant.get("hours");
                         if (isOpen(hours)) {
-                            mo.icon(BitmapDescriptorFactory.defaultMarker());
+                            mo.icon(BitmapDescriptorFactory.fromResource(R.drawable.greentri));
                         } else {
                             mo.icon(BitmapDescriptorFactory.fromResource(R.drawable.redtriangle1));
                         }
