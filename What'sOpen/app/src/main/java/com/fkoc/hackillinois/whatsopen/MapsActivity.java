@@ -43,11 +43,12 @@ public class MapsActivity extends FragmentActivity {
         // Enable Location Tracking
         mMap.setMyLocationEnabled(true);
 
-        FactualRetrievalTask task = new FactualRetrievalTask();
+        FactualRetrievalTask task_cafe = new FactualRetrievalTask();
+        FactualRetrievalTask task_food = new FactualRetrievalTask();
 
         double s_latitude = 40.112475;
         double s_longitude = -88.226863;
-        int search_radius = 2000;
+        int search_radius = 3000;
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         String locationProvider = LocationManager.GPS_PROVIDER;
         Location location = locationManager.getLastKnownLocation(locationProvider);
@@ -71,7 +72,7 @@ public class MapsActivity extends FragmentActivity {
                     .sortAsc("$distance")
                     .only("name", "latitude", "longitude", "hours");
 
-            task.execute(restaurant_query);
+            task_food.execute(restaurant_query);
         }
         if (cafB) {
             Query cafe_query = new Query()
@@ -80,7 +81,7 @@ public class MapsActivity extends FragmentActivity {
                     .sortAsc("$distance")
                     .only("name", "latitude", "longitude", "hours");
 
-            task.execute(cafe_query);
+            task_cafe.execute(cafe_query);
         }
         if (gymB) {
             ArrayList<Spot> gyms = new ArrayList();
@@ -197,7 +198,7 @@ public class MapsActivity extends FragmentActivity {
                         }
                         mMap.addMarker(mo);
                     } catch (NullPointerException e) {
-                        //No business hour information available
+                        mMap.addMarker(mo.icon(BitmapDescriptorFactory.fromResource(R.drawable.greentri)));
                     }
                     //Number rating = (Number) restaurant.get("rating");
                     //boolean open24 = (boolean) restaurant.get("open_24hrs");
