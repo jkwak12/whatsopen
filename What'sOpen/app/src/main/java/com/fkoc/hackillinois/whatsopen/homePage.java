@@ -10,6 +10,8 @@ import android.widget.Button;
 
 
 public class homePage extends ActionBarActivity {
+    boolean food, cafe, library, building, gym;
+    food=cafe=library=building=gym=false;
 
     Button toMap;
 
@@ -50,4 +52,43 @@ public class homePage extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    public void changeBooleans(View view) {
+        boolean checked = ((CheckBox) view).isChecked();
+
+        switch (view.getId()) {
+            case R.id.foodBox:
+                if (checked) {
+                    food = true;
+                } else {
+                    food = false;
+                }
+                break;
+            case R.id.cafeBox:
+                if (checked) {
+                    cafe = true;
+                } else {
+                }
+                break;
+            case R.id.libraryBox:
+                if (checked) {
+                    library = true;
+                } else {
+                }
+                break;
+            case R.id.buildingBox:
+                if (checked) {
+                    building = true;
+                } else {
+                }
+                break;
+            case R.id.gymBox:
+                if (checked) {
+                    gym = true;
+                } else {
+                }
+                break;
+        }
+    }
+    p
 }
