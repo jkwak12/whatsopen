@@ -20,6 +20,11 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.api.client.util.Lists;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -77,28 +82,28 @@ public class MapsActivity extends FragmentActivity {
         protected void onPostExecute(List<ReadResponse> responses) {
             for (ReadResponse response : responses) {
                 for (Map<String, Object> restaurant : response.getData()) {
-                    StringBuffer sb = new StringBuffer();
 
                     String name = (String) restaurant.get("name");
                     double latitude = (double) restaurant.get("latitude");
                     double longitude = (double) restaurant.get("longitude");
                     //Number rating = (Number) restaurant.get("rating");
+                    MarkerOptions mo = new MarkerOptions()
+                            .position(new LatLng(latitude, longitude))
+                            .alpha(0.8f)
+                            .title(name);
                     try {
-                        String hours = (String) restaurant.get("hours").toString();
-                        mMap.addMarker(new MarkerOptions()
-                                .position(new LatLng(latitude, longitude))
-                                .title(name)
-                                .snippet(hours)
-                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.redtriangle1))
-                                .alpha(0.8f));
-                    } catch(NullPointerException e) {
-                        mMap.addMarker(new MarkerOptions()
-                                .position(new LatLng(latitude, longitude))
-                                .title(name)
-                                .snippet(e.getMessage())
-                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.redtriangle1))
-                                .alpha(0.8f));
+                        JSONObject hours = (JSONObject) restaurant.get("hours");
+                        mo.snippet(hours.toString());
+                        if (isOpen(hours)) {
+                            mo.icon(BitmapDescriptorFactory.fromResource(R.drawable.greentriangle));
+                        } else {
+                            mo.icon(BitmapDescriptorFactory.fromResource(R.drawable.redtriangle1));
+                        }
+                    } catch (NullPointerException e) {
+                        mo.snippet(e.getMessage());
+                        mo.icon(BitmapDescriptorFactory.defaultMarker());
                     }
+                    mMap.addMarker(mo);
                     //boolean open24 = (boolean) restaurant.get("open_24hrs");
                     //boolean deliver = (boolean) restaurant.get("meal_deliver");
                     //boolean takeout = (boolean) restaurant.get("meal_takeout");
@@ -106,6 +111,33 @@ public class MapsActivity extends FragmentActivity {
             }
         }
     }
+
+    // JSON if store is open
+    // JSONObject is named hours
+    // assuming datetime is imported
+
+
+    boolean isOpen(JSONObject hours) {
+        String[] days = {"sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"};
+        try {
+            JSONArray times_1 = hours.getJSONArray(days[Calendar.DAY_OF_WEEK-1]);
+            JSONArray times = times_1.getJSONArray(0);
+            Calendar now = Calendar.getInstance();
+            Calendar open = Calendar.getInstance();
+            Calendar close = Calendar.getInstance();
+            open.set(Calendar.HOUR_OF_DAY, Integer.parseInt(times.getString(0).split(":")[0]));
+            open.set(Calendar.MINUTE, Integer.parseInt(times.getString(0).split(":")[1]));
+            close.set(Calendar.HOUR_OF_DAY, Integer.parseInt(times.getString(0).split(":")[0]));
+            close.set(Calendar.MINUTE, Integer.parseInt(times.getString(0).split(":")[1]));
+            if (now.compareTo(open) > 0 && now.compareTo(close) < 0) {
+                return true;
+            }
+        } catch (JSONException e) {
+            //this day could not be found
+        }
+        return false;
+    }
+
 
     @Override
     protected void onResume() {

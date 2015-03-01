@@ -7,12 +7,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 
 
 public class homePage extends ActionBarActivity {
     boolean food, cafe, library, building, gym;
-    food=cafe=library=building=gym=false;
-
     Button toMap;
 
     @Override
@@ -90,5 +89,4 @@ public class homePage extends ActionBarActivity {
                 break;
         }
     }
-    p
 }
