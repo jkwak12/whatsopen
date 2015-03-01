@@ -6,7 +6,6 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.widget.TextView;
 
 import com.factual.driver.Circle;
 import com.factual.driver.Factual;
