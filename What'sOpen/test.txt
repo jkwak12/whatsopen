@@ -1,0 +1,33 @@
+// JSONObject is named hours
+// assuming datetime is imported
+import java.util.Calendar;
+import java.util.Date;
+
+
+
+
+void boolean isOpen(JSONObject hours){
+String[] days = ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"];
+for (String day:days)
+{
+	try{
+	String[] times = hours.get(day);
+	Calendar now = Calendar.getInstance();
+	Calendar open = Calendar.getInstance();
+	Calendar close = new Calendar.getInstance();
+	open.set(HOUR_OF_DAY, Integer.parseInt(times[0].split(":")[0]));
+	open.set(MINUTE, Integer.parseInt(times[0].split(":")[1]));
+	close.set(HOUR_OF_DAY, Integer.parseInt(times[1].split(":")[0]));
+	close.set(MINUTE, Integer.parseInt(times[1].split(":")[1]));
+	if (now > open && now < close)
+		{return true;}
+	else
+		{return false;}
+
+	}
+	catch (JSONException e)
+	{
+		//this day could not be found
+	}
+}
+}
