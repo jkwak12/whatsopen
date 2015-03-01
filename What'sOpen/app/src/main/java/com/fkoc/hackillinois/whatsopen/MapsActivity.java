@@ -23,6 +23,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.*;
 import java.sql.Time;
 import java.util.Calendar;
 import java.util.List;
@@ -83,13 +84,77 @@ public class MapsActivity extends FragmentActivity {
             }
         }
         if (gymB) {
+            ArrayList<Spot> gyms = new ArrayList();
+            gyms.add(new Spot("CRCE", 40.104673, -88.221772, 390, 1439));
+            gyms.add(new Spot("ARC", 40.100763, -88.236044, 360, 1439));
+            gyms.add(new Spot("UI Ice Arena", 40.105849, -88.232461, 1170, 1290));
+            gyms.add(new Spot("Bowling", 40.109349, -88.227177, 690, 1410));
+            gyms.add(new Spot("Billiards", 40.109349, -88.227177, 690, 1410));
+            gyms.add(new Spot("YMCA", 40.106602, -88.229154, 540, 960));
 
+            for (Spot s : gyms) {
+                MarkerOptions mo = new MarkerOptions()
+                .title(s.getName())
+                .position(s.getLatLng());
+                if (s.isOpen()) {
+                    mo.icon(BitmapDescriptorFactory.defaultMarker());
+                } else {
+                    mo.icon(BitmapDescriptorFactory.fromResource(R.drawable.redtriangle1));
+                }
+            }
         }
         if (buildB) {
-            //Nothing for now
+            ArrayList<Spot> buildings = new ArrayList();
+            buildings.add(new Spot("Loomis Lab", 40.110806, -88.223225, 420, 1260));
+            buildings.add(new Spot("ECE Building", 40.114835, -88.228050, 420, 1200));
+            buildings.add(new Spot("Siebel", 40.113877, -88.224894, 420, 1200));
+            buildings.add(new Spot("Digital Computer Laboratory", 40.113163, -88.226654, 480, 1439));
+            buildings.add(new Spot("Psychology Building", 40.107520, -88.229962, 420, 1200));
+            buildings.add(new Spot("Mechanical Eng Lab", 40.111787, -88.226214, 480, 1439));
+            buildings.add(new Spot("Engineering Hall", 40.110885, -88.226847, 0, 1439));
+            buildings.add(new Spot("Altgeld Hall", 40.109297, -88.228341, 540, 1200));
+            buildings.add(new Spot("McKinley Health Center", 40.102878, -88.219802, 480, 1020));
+            buildings.add(new Spot("Illini Union Bookstore", 40.108302, -88.229211, 420, 1380));
+            buildings.add(new Spot("TIS College Bookstore", 40.109652, -88.230501, 530, 1080));
+            for (Spot s : buildings) {
+                MarkerOptions mo = new MarkerOptions()
+                        .title(s.getName())
+                        .position(s.getLatLng());
+                if (s.isOpen()) {
+                    mo.icon(BitmapDescriptorFactory.defaultMarker());
+                } else {
+                    mo.icon(BitmapDescriptorFactory.fromResource(R.drawable.redtriangle1));
+                }
+            }
         }
         if (libB) {
-            //Nothing for now
+            ArrayList<Spot> libraries = new ArrayList();
+            libraries.add(new Spot("Grainger Library", 40.112504, -88.226904, 480, 1439));
+            libraries.add(new Spot("Math Library", 40.109420, -88.228277, 540, 1200));
+            libraries.add(new Spot("Chem Library", 40.108411, -88.226035, 510, 1260));
+            //libraries.add(new Spot("Health Sciences Library", 40.108575, -88.226035, o, c));
+            //libraries.add(new Spot("Communications Library", 40.105628, -88.228158, o, c));             libraries.add(new Spot("Classics Library", 40.104549, -88.228399, 540, 1140));
+            libraries.add(new Spot("English Library", 40.104376, -88.228753, 540, 1140));
+            //libraries.add(new Spot("Archives", 40.104610, -88.228850, o, c));
+            libraries.add(new Spot("Undergraduate Library", 40.104643, -88.227182, 0, 1439));
+            libraries.add(new Spot("ACES Library", 40.102813, -88.225181, 510, 1600));
+            libraries.add(new Spot("Ricker Architecture and Art Library", 40.103432, -88.229095, 510, 1320));
+            //libraries.add(new Spot("Agricultural Library", 40.102850, -88.225025, o, c));
+            libraries.add(new Spot("Music Library", 40.106539, -88.223051, 510, 1600));
+            //libraries.add(new Spot("Allen Hall Library", 40.104080, -88.220887, o, c));
+            libraries.add(new Spot("Law Library", 40.100980, -88.231991, 480, 1439));
+            libraries.add(new Spot("Map and Geography Library", 40.101209, -88.229084, 510, 1020));
+            //libraries.add(new Spot("Ike Library", 40.103950, -88.235264, o, c));
+            for (Spot s : libraries) {
+                MarkerOptions mo = new MarkerOptions()
+                        .title(s.getName())
+                        .position(s.getLatLng());
+                if (s.isOpen()) {
+                    mo.icon(BitmapDescriptorFactory.defaultMarker());
+                } else {
+                    mo.icon(BitmapDescriptorFactory.fromResource(R.drawable.redtriangle1));
+                }
+            }
         }
     }
 
