@@ -67,21 +67,20 @@ public class MapsActivity extends FragmentActivity {
         if (foodB) {
             Query restaurant_query = new Query()
                     .within(new Circle(s_latitude, s_longitude, search_radius))
+                    .field("category_ids").equal(347)
                     .sortAsc("$distance")
-                    .only("name", "latitude", "longitude", "rating", "hours");
+                    .only("name", "latitude", "longitude", "hours");
 
             task.execute(restaurant_query);
         }
         if (cafB) {
-            Spot testStarbucks = new Spot("Starbucks", 40.110303, -88.231731, 600, 1320);
-            MarkerOptions mo = new MarkerOptions()
-            .position(testStarbucks.getLatLng())
-            .title(testStarbucks.getName());
-            if (testStarbucks.isOpen()) {
-                mo.icon(BitmapDescriptorFactory.defaultMarker());
-            } else {
-                mo.icon(BitmapDescriptorFactory.fromResource(R.drawable.redtriangle1));
-            }
+            Query cafe_query = new Query()
+                    .within(new Circle(s_latitude, s_longitude, search_radius))
+                    .field("category_ids").equal(342)
+                    .sortAsc("$distance")
+                    .only("name", "latitude", "longitude", "hours");
+
+            task.execute(cafe_query);
         }
         if (gymB) {
             ArrayList<Spot> gyms = new ArrayList();
