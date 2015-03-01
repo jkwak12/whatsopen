@@ -27,7 +27,7 @@
         android:visibility="visible"
         android:layout_marginRight="70dp"
         android:layout_marginTop="20dp"
-        />
+        android:checked="false" />
     <CheckBox android:id="@+id/cafeBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
